@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaswanth Sai Ram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background: radial-gradient(circle at 30% 50%, rgba(56, 182, 255, 0.2) 0%, rgba(9, 9, 11, 1) 60%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .project-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px -5px rgba(56, 182, 255, 0.4);
+            border: 1px solid rgba(56, 182, 255, 0.4);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(56, 182, 255, 0.7);
+        }
+        
+        .tech-chip {
+            transition: all 0.2s ease;
+        }
+        
+        .tech-chip:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px currentColor;
+        }
+        
+        .input-field {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: rgba(56, 182, 255, 0.6);
+            box-shadow: 0 0 0 3px rgba(56, 182, 255, 0.2);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .cursor-trail {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(56, 182, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            filter: blur(2px);
+        }
+        
+        .sphere {
+            background: radial-gradient(circle at 30% 30%, rgba(56, 182, 255, 0.3) 0%, transparent 60%);
+            filter: blur(20px);
+        }
+        
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 24px;
+            background-color: #3b82f6;
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: #3b82f6; }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans overflow-x-hidden">
+    <!-- Cursor Trail -->
+    <div id="cursor-trail" class="cursor-trail"></div>
+    
+    <!-- Particles Background -->
+    <div id="particles-js" class="fixed top-0 left-0 w-full h-full z-0 opacity-30"></div>
+    
+    <!-- Floating Spheres -->
+    <div class="fixed w-80 h-80 rounded-full sphere -left-40 -top-40 z-0"></div>
+    <div class="fixed w-96 h-96 rounded-full sphere -right-60 bottom-60 z-0"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold tracking-wider glow-text">
+                    Yaswanth<span class="text-blue-400">.</span>
+                </a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-blue-400 transition duration-300">Home</a>
+                    <a href="#about" class="hover:text-blue-400 transition duration-300">About</a>
+                    <a href="#projects" class="hover:text-blue-400 transition duration-300">Projects</a>
+                    <a href="#contact" class="hover:text-blue-400 transition duration-300">Contact</a>
+                </div>
+                <a href="#contact" class="hidden md:inline-block px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-sm font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300">
+                    Let's Talk
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-blue-400">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900/95 backdrop-blur-sm pb-4">
+            <div class="container mx-auto px-6 pt-2 flex flex-col space-y-4">
+                <a href="#home" class="py-2 hover:text-blue-400 transition duration-300 border-b border-slate-800">Home</a>
+                <a href="#about" class="py-2 hover:text-blue-400 transition duration-300 border-b border-slate-800">About</a>
+                <a href="#projects" class="py-2 hover:text-blue-400 transition duration-300 border-b border-slate-800">Projects</a>
+                <a href="#contact" class="py-2 hover:text-blue-400 transition duration-300">Contact</a>
+                <a href="#contact" class="w-full text-center px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-sm font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300">
+                    Let's Talk
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen hero-bg pt-32 pb-20 relative overflow-hidden">
+        <div class="container mx-auto px-6 z-10 relative">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-16 md:mb-0">
+                    <p class="text-blue-400 mb-2">Hello, I'm</p>
+                    <h1 class="text-5xl md:text-6xl font-bold mb-4">Yaswanth <span class="text-blue-400">Sai Ram</span></h1>
+                    <div class="text-xl md:text-2xl mb-6 flex items-center">
+                        <span id="typing-text" class="font-medium text-slate-300"></span>
+                        <span class="typing-cursor"></span>
+                    </div>
+                    <p class="text-slate-300 mb-8 max-w-lg leading-relaxed">
+                        An aspiring engineering student graduating in 2026, passionate about creating innovative solutions and pushing technological boundaries.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="YASWANTH_Resume.pdf" id="resume-download" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center">
+                            <i class="fas fa-download mr-2"></i> Download Resume
+                        </a>
+                        <a href="#projects" class="px-6 py-3 border border-blue-400 text-blue-400 rounded-full font-medium hover:bg-blue-400/10 transition-all duration-300 flex items-center">
+                            <i class="fas fa-eye mr-2"></i> View Projects
+                        </a>
+                    </div>
+                    <div class="mt-10">
+                        <p class="text-slate-400 mb-3">Find me on</p>
+                        <div class="flex space-x-4">
+                            <a href="https://www.linkedin.com/in/yaswanth45/" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/YASWANTH2819" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center relative">
+                    <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-2 border-blue-400/30 shadow-lg shadow-blue-500/20 mb-10 md:mb-0 floating">
+                        <img src="https://files.catbox.moe/ojsbbu.png" alt="Yaswanth Sai Ram" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-blue-400/10 backdrop-blur-sm flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
+                            <p class="text-xl font-bold">Hi there! 👋</p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-5 -left-5 w-32 h-32 rounded-full bg-blue-500/20 filter blur-xl z-0"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="container mx-auto px-6 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">About <span class="text-blue-400">Me</span></h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-2xl overflow-hidden border border-blue-400/30 shadow-lg shadow-blue-500/10">
+                        <img src="https://files.catbox.moe/gh360v.jpg" alt="Yaswanth" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/70 via-slate-900/10 to-transparent flex items-end p-6">
+                            <div>
+                                <h3 class="text-xl font-bold">Yaswanth Sai Ram</h3>
+                                <p class="text-blue-400">An Engineer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3">
+                    <h3 class="text-2xl font-bold mb-6">Who am I?</h3>
+                    <p class="text-slate-300 mb-6 leading-relaxed">
+                        I'm a passionate engineering student on track to graduate in 2026. Currently specializing in 
+                        <span class="text-blue-400 font-medium">Information Technology</span>, I'm dedicated to mastering cutting-edge technologies and applying them to solve real-world problems.
+                    </p>
+                    <p class="text-slate-300 mb-8 leading-relaxed">
+                        With a strong foundation in both theoretical concepts and practical applications, I thrive in collaborative environments where I can contribute my skills while learning from experienced professionals. My journey in engineering is driven by curiosity and a desire to create impactful solutions.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h4 class="text-xl font-bold mb-4 text-blue-400">My Skills</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tech-chip px-4 py-2 rounded-full bg-slate-800 text-blue-400 border border-blue-400/30 shadow-sm">Java</span>
+                            <span class="tech-chip px-4 py-2 rounded-full bg-slate-800 text-cyan-400 border border-cyan-400/30 shadow-sm">Python</span>
+                            <span class="tech-chip px-4 py-2 rounded-full bg-slate-800 text-emerald-400 border border-emerald-400/30 shadow-sm">WebDevelopment</span>
+                            <span class="tech-chip px-4 py-2 rounded-full bg-slate-800 text-purple-400 border border-purple-400/30 shadow-sm">Problem-Solving</span>
+                            <span class="tech-chip px-4 py-2 rounded-full bg-slate-800 text-yellow-400 border border-yellow-400/30 shadow-sm">Communication</span>
+                            <span class="tech-chip px-4 py-2 rounded-full bg-slate-800 text-red-400 border border-red-400/30 shadow-sm">Firebase</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <div class="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 shadow-lg">
+                            <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5 class="font-bold mb-2">Education</h5>
+                            <p class="text-slate-300 text-sm">
+                                Pursuing B.Tech in Information Technology<br>
+                                SIR C.R REDDY COLLEGE OF ENGINEERING, 2022-2026
+                            </p>
+                        </div>
+                        
+                        <div class="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-6 shadow-lg">
+                            <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h5 class="font-bold mb-2">Internships</h5>
+                            <p class="text-slate-300 text-sm">
+                                Currently seeking internship opportunities to apply my academic knowledge in professional settings.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-slate-900/50 relative">
+        <div class="container mx-auto px-6 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">My <span class="text-blue-400">Projects</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Here are some of my academic and personal projects that showcase my technical skills and problem-solving abilities.</p>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card rounded-xl p-6 transition-all hover:shadow-blue-400/20">
+                    <div class="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 mb-4">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Smart Surveillance Drone</h3>
+                    <p class="text-slate-300 text-sm mb-4">An autonomous drone with real-time object detection capabilities for security applications.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">Python</span>
+                        <span class="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs rounded">OpenCV</span>
+                        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">Raspberry Pi</span>
+                    </div>
+                    <a href="#" class="text-blue-400 text-sm hover:underline inline-flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card rounded-xl p-6 transition-all hover:shadow-green-400/20">
+                    <div class="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center text-green-400 mb-4">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Smart Irrigation System</h3>
+                    <p class="text-slate-300 text-sm mb-4">IoT-based solution that automatically waters plants based on soil moisture levels and weather forecasts.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">NodeMCU</span>
+                        <span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded">Firebase</span>
+                        <span class="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded">Arduino</span>
+                    </div>
+                    <a href="#" class="text-green-400 text-sm hover:underline inline-flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card rounded-xl p-6 transition-all hover:shadow-purple-400/20">
+                    <div class="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Stock Prediction Model</h3>
+                    <p class="text-slate-300 text-sm mb-4">Machine learning model that analyzes market trends to predict stock prices with 85% accuracy.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">TensorFlow</span>
+                        <span class="px-2 py-1 bg-pink-500/20 text-pink-400 text-xs rounded">Pandas</span>
+                        <span class="px-2 py-1 bg-orange-500/20 text-orange-400 text-xs rounded">Matplotlib</span>
+                    </div>
+                    <a href="#" class="text-purple-400 text-sm hover:underline inline-flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card rounded-xl p-6 transition-all hover:shadow-cyan-400/20">
+                    <div class="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Autonomous Vehicle Simulation</h3>
+                    <p class="text-slate-300 text-sm mb-4">A virtual environment simulating self-driving cars using reinforcement learning algorithms.</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs rounded">Unity</span>
+                        <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">Python</span>
+                        <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded">TensorFlow</span>
+                    </div>
+                    <a href="#" class="text-cyan-400 text-sm hover:underline inline-flex items-center">
+                        View Details <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-flex items-center px-6 py-3 border border-blue-400 text-blue-400 rounded-full font-medium hover:bg-blue-400/10 transition-all duration-300">
+                    <i class="fas fa-book-open mr-2"></i> View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="container mx-auto px-6 z-10 relative">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Get In <span class="text-blue-400">Touch</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Have a project in mind or want to discuss potential opportunities? Feel free to reach out!</p>
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4"></div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-slate-300 mb-2">Your Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none" required>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-slate-300 mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none" required>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-slate-300 mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none" required>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-slate-300 mb-2">Your Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 rounded-lg input-field focus:outline-none" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-lg font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center">
+                            <span id="submit-text">Send Message</span>
+                            <span id="submit-loader" class="hidden ml-2">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-slate-800/30 border border-slate-700 rounded-2xl p-8 backdrop-blur-sm shadow-xl">
+                        <h3 class="text-2xl font-bold mb-6 text-blue-400">Contact Information</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1 mr-4">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Email</h4>
+                                    <a href="mailto:yaswanth@example.com" class="text-slate-300 hover:text-blue-400 transition">yaswanthsairam15@gmail.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400 mt-1 mr-4">
+                                    <i class="fab fa-whatsapp"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">WhatsApp</h4>
+                                    <a href="https://wa.me/919876543210" class="text-slate-300 hover:text-green-400 transition">+91 8688882597</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 mt-1 mr-4">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium mb-1">Location</h4>
+                                    <p class="text-slate-300">Gudivada, India</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12">
+                            <h4 class="text-lg font-medium mb-4">Follow Me</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.linkedin.com/in/yaswanth45/" target="_blank" class="w-12 h-12 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://github.com/YASWANTH2819" target="_blank" class="w-12 h-12 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="#" class="w-12 h-12 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="https://www.instagram.com/yaswanth.0483/" target="_blank" class="w-12 h-12 rounded-full flex items-center justify-center border border-slate-700 hover:border-blue-400 hover:text-blue-400 transition duration-300">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-10 border-t border-slate-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold tracking-wider glow-text">
+                        Yaswanth<span class="text-blue-400">.</span>
+                    </a>
+                    <p class="text-slate-400 mt-2 text-sm">© 2025 Yaswanth Sai Ram. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-blue-500 text-white shadow-lg flex items-center justify-center hover:bg-blue-600 transition duration-300 z-50 hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Confirmation Toast -->
+    <div id="confirmation-toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg z-50 hidden items-center">
+        <i class="fas fa-check-circle mr-2"></i>
+        <span>Message sent successfully!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                mobileMenu.classList.add('hidden');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Typing Animation
+        const typingText = document.getElementById('typing-text');
+        const words = ["Engineering Student", "Tech Enthusiast", "Problem Solver", "Java Developer", "Communicator"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let isEnd = false;
+        
+        function type() {
+            const currentWord = words[wordIndex];
+            const currentChar = currentWord.substring(0, charIndex);
+            
+            typingText.textContent = currentChar;
+            
+            if (!isDeleting && charIndex < currentWord.length) {
+                // Typing
+                charIndex++;
+                setTimeout(type, 100);
+            } else if (isDeleting && charIndex > 0) {
+                // Deleting
+                charIndex--;
+                setTimeout(type, 50);
+            } else {
+                // Change word
+                isDeleting = !isDeleting;
+                if (!isDeleting) {
+                    wordIndex = (wordIndex + 1) % words.length;
+                }
+                setTimeout(type, 1000);
+            }
+        }
+        
+        // Start typing animation
+        setTimeout(type, 1000);
+        
+        // Contact Form Submission
+        const contactForm = document.getElementById('contact-form');
+        const submitText = document.getElementById('submit-text');
+        const submitLoader = document.getElementById('submit-loader');
+        const confirmationToast = document.getElementById('confirmation-toast');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Show loading state
+            submitText.textContent = "Sending...";
+            submitLoader.classList.remove('hidden');
+            
+            // Simulate form submission
+            setTimeout(() => {
+                // Reset form
+                contactForm.reset();
+                
+                // Show success message
+                submitText.textContent = "Message Sent!";
+                submitLoader.classList.add('hidden');
+                
+                // Show toast
+                confirmationToast.classList.remove('hidden');
+                
+                // Hide toast after 3 seconds
+                setTimeout(() => {
+                    confirmationToast.classList.add('hidden');
+                    submitText.textContent = "Send Message";
+                }, 3000);
+            }, 1500);
+        });
+        
+        // Resume Download
+        const resumeDownload = document.getElementById('resumeeee');
+        
+        resumeDownload.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Simulate download
+            const downloadText = resumeDownload.innerHTML;
+            resumeDownload.innerHTML = '<i class="fas fa-download mr-2"></i> Downloading...';
+            
+            setTimeout(() => {
+                resumeDownload.innerHTML = '<i class="fas fa-check mr-2"></i> Downloaded!';
+                
+                setTimeout(() => {
+                    resumeDownload.innerHTML = downloadText;
+                }, 2000);
+            }, 1500);
+        });
+        
+        // Cursor Trail Effect
+        const cursorTrail = document.getElementById('cursor-trail');
+        let mouseX = 0, mouseY = 0;
+        let trailX = 0, trailY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function updateCursorTrail() {
+            const diffX = mouseX - trailX;
+            const diffY = mouseY - trailY;
+            
+            trailX += diffX * 0.1;
+            trailY += diffY * 0.1;
+            
+            cursorTrail.style.left = `${trailX}px`;
+            cursorTrail.style.top = `${trailY}px`;
+            
+            requestAnimationFrame(updateCursorTrail);
+        }
+        
+        updateCursorTrail();
+        
+        // Particles.js Background
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#3b82f6"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3b82f6",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCR1Riu0h6oOkgE_1g90KN6WOqbrGi_Fn8",
+    authDomain: "portfolio-cebbd.firebaseapp.com",
+    projectId: "portfolio-cebbd",
+    storageBucket: "portfolio-cebbd.firebasestorage.app",
+    messagingSenderId: "481734749334",
+    appId: "1:481734749334:web:2fa92fdf4abe61205a26b7",
+    measurementId: "G-2VV1N4GSMC"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+
+  // Form submission handler
+  const form = document.getElementById("contact-form");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (name && email && subject && message) {
+      try {
+        await push(ref(database, "contacts"), {
+          name,
+          email,
+          subject,
+          message,
+          timestamp: new Date().toISOString()
+        });
+
+        alert("✅ Message sent successfully!");
+        form.reset();
+      } catch (error) {
+        alert("❌ Error: " + error.message);
+      }
+    } else {
+      alert("Please fill all fields.");
+    }
+  });
+</script>
+
+</body>
+</html>
